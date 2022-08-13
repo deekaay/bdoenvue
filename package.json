@@ -1,0 +1,18 @@
+{
+  "name": "bdoen",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173"
+  },
+  "dependencies": {
+    "core-js": "^3.24.1",
+    "vue": "^3.2.37"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.18.9",
+    "@vitejs/plugin-vue": "^3.0.1",
+    "vite": "^3.0.4"
+  }
+}
