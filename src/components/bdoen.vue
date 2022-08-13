@@ -3,9 +3,6 @@
 import { strategies } from '@/components/strategies';
 import {execute_metastrategy}  from '@/components/executor';
 
-console.log(strategies);
-console.log("Hello");
-
 export default
 {
     name : "bdoen",
