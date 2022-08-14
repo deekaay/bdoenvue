@@ -23,7 +23,7 @@ export function execute_metastrategy(state) {
 
             console.log(try_result);
             if (try_result == "Failure")
-                current_fs++;
+                current_fs += ladder_log[current_fs].actions["gain_fs"];
             if (try_result == "Success")
                 current_fs = 0;
             console.log(" Result " + try_result + " new fs: " + current_fs);
@@ -32,8 +32,7 @@ export function execute_metastrategy(state) {
         meta_log.push(ladder_log);
 
     }
-    console.log("Success");
-
+    return meta_log;
 }
 function trystrategy(strategy, fs) {
     console.log("Try Strategy: " + strategy + " fs: " + fs);
