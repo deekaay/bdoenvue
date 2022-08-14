@@ -16,7 +16,8 @@ export default
         {
             target: 20,
             metastrategy: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-            maxattempts: 500
+            maxattempts: 500,
+            numiterations: 20
         },
         metastrategy_results : null
         }
@@ -54,7 +55,7 @@ export default
 </div>
 <div class="col" id="log">
     <div v-for="(x,i) in pretty_log" class="card"> 
-        <div class="card-header" :id="`ladderrun_${i}`" data-bs-toggle="collapse" :data-bs-target="`#ladder_run_${i}_detail`">    New Attempt:  {{i}} </div>
+        <div class="card-header" :id="`ladderrun_${i}`" data-bs-toggle="collapse" :data-bs-target="`#ladder_run_${i}_detail`">    New Attempt:  {{i+1}} </div>
         <div class="collapse hide" :id="`ladder_run_${i}_detail`" data-parent="#log">
         <div class="card-body">
         <div v-for="y in x" class="ladder_step"> 
