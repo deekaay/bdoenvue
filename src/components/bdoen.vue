@@ -31,6 +31,8 @@ export default
             {
                 if (x["gain_fs"])
                     return "Gained " + x["gain_fs"] + " failstacks";
+                if (x["lose_all_fs"])
+                    return "Lost all failstacks.";
             }
     },
     computed:
@@ -59,7 +61,7 @@ export default
         <div class="collapse hide" :id="`ladder_run_${i}_detail`" data-parent="#log">
         <div class="card-body">
         <div v-for="y in x" class="ladder_step"> 
-            <div> {{y.result}} </div> <div> {{format_consequences(y.actions)}} </div>
+            <div> {{y.fs}} FS: {{y.result}} </div> <div> {{format_consequences(y.actions)}} </div>
             </div>
             </div>
             </div>
