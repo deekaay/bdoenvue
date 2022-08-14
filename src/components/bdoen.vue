@@ -27,10 +27,16 @@ export default
                 this.metastrategy_results = execute_metastrategy(this.state);
             },
             format_consequences: function (x) {
+                let ret = "";
+                for (let q in x["lose"])
+                    ret += "Lost " + x["lose"][q] + " " + q;
+                for (let q in x["gain"])
+                    ret += "Gained " + x["gain"][q] + " " + q;
                 if (x["gain_fs"])
-                    return "Gained " + x["gain_fs"] + " failstacks";
+                    ret += "Gained " + x["gain_fs"] + " failstacks";
                 if (x["lose_all_fs"])
-                    return "Lost all failstacks.";
+                    ret += "Lost all failstacks.";
+                return ret;
             }
         },
         computed:

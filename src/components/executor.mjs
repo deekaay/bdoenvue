@@ -1,4 +1,5 @@
 import {strategies} from "./strategies";
+import {mergeactionsandcost} from '../util/mergeaction';
 
 export function execute_metastrategy(state) {
     let meta_log = [];
@@ -13,7 +14,7 @@ export function execute_metastrategy(state) {
         let current_fs = 0;
         while (current_fs < state.target && cur_attempt <= state.maxattempts) // This means we're within a ladder.
         {
-            console.log("Current fs: " + current_fs + " trying strategy" + strategies[state.metastrategy[current_fs]].name.en)
+            //console.log("Current fs: " + current_fs + " trying strategy" + strategies[state.metastrategy[current_fs]].name.en)
             let res = trystrategy(state.metastrategy[current_fs], current_fs);
             try_result = res.result;
 
@@ -25,7 +26,6 @@ export function execute_metastrategy(state) {
                 cur_attempt++;
                 res.actions["lose_all_fs"] = 1;
                 }
-
           ladder_log.push(res);
         }
         meta_log.push(ladder_log);
@@ -47,17 +47,22 @@ function trystrategy(strategy, fs) {
 
     if (r <= prob.success) {
         try_log.result = 'Success';
-        try_log.actions = s.success;
+        try_log.actions = mergeactionsandcost(s.success, s.cost);
         // Success.
     }
     else if (r > prob.success && r <= (prob.success + prob.failure))
     {
         // Fail, no blowup.
         try_log.result = 'Failure';
-        try_log.actions = s.failure;
+        try_log.actions = mergeactionsandcost(s.failure, s.cost);
     }
     else {
         //Other
+        try_log.actions = s.cost;
     }
+    console.log('Try_log action:');
+    console.log( try_log.actions);
+    console.log('Try_log action done');
+
     return try_log;
 }
