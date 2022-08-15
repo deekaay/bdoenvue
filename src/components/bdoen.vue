@@ -16,15 +16,15 @@ export default
                     target: 20,
                     metastrategy: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                     maxattempts: 500,
-                    numiterations: 20
-                },
-                metastrategy_results: null
+                    numiterations: 20,
+                    ladder_results : [ ]
+                }
             }
         },
         methods: {
             go: function go(ev) {
                 console.log("Trying to execute metastrategy");
-                this.metastrategy_results = execute_metastrategy(this.state);
+                execute_metastrategy(this.state);
             },
             format_consequences: function (x) {
                 let ret = "";
@@ -42,7 +42,7 @@ export default
         computed:
         {
             pretty_log() {
-                return this.metastrategy_results;
+                return "";
             }
 
         }
@@ -60,14 +60,15 @@ export default
                 <button v-on:click="go($event)"> Go </button>
             </div>
             <div class="col" id="log">
-                <div v-for="(x, i) in pretty_log" class="card">
+                <div v-for="(x, i) in state.ladder_results" class="card"> <!-- For each ladder run.  -->
                     <div class="card-header ladder-run" :id="`ladderrun_${i}`" data-bs-toggle="collapse"
                         :data-bs-target="`#ladder_run_${i}_detail`"> New Attempt: {{ i + 1 }} </div>
                     <div class="collapse hide" :id="`ladder_run_${i}_detail`" data-parent="#log">
                         <div class="card-body">
-                            <div v-for="y in x" class="ladder-step">
-                                <div> {{ y.fs }} FS: {{ y.result }} </div>
-                                <div> {{ format_consequences(y.actions) }} </div>
+                            <div v-for="y in x.step_logs" class="ladder-step"> <!-- For each log item in the step log -->
+                                <div>Starting FS {{ y.incoming_fs }} </div> 
+                                <div v-for="z in y.step_log" class="ladder-step-det"> {{z}} </div>
+                                <div> {{ y.step_result }}  </div>
                             </div>
                         </div>
                     </div>

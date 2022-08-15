@@ -1,7 +1,7 @@
 
 export default  {
     name : { en : "Enhance Reblath +14" },
-    requires : [ { "16001_14" : 1 }, {"10181": 1} ],
+    requires : { "16001_14" : 1, "10181": 1} ,
     minuse: 1,
     maxuse: 19,
     chance : function(x)
