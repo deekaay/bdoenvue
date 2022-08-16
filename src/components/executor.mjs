@@ -45,6 +45,9 @@ export function execute_metastrategy(state) {
 
     }
     console.log(state.ladder_results);
+
+    state.total_cost = state.ladder_results.reduce((s, x) => s+x.cost, 0 );
+
 }
 function trystrategy(strategy, inventory) {
     console.log("Try Strategy: " + strategy + " fs: " + inventory.fs);

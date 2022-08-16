@@ -17,6 +17,7 @@ export default
                     metastrategy: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                     maxattempts: 500,
                     numiterations: 20,
+                    total_cost : 0,
                     ladder_results : [ ]
                 }
             }
@@ -52,6 +53,7 @@ export default
 
 <template>
     <div class="container">
+        <div class="row">{{state.total_cost}}  {{state.numiterations}} {{ state.total_cost / state.numiterations}}</div> 
         <div class="row">
             <div class="col">
                 <ul>
