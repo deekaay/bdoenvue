@@ -62,7 +62,7 @@ export default
             <div class="col" id="log">
                 <div v-for="(x, i) in state.ladder_results" class="card"> <!-- For each ladder run.  -->
                     <div class="card-header ladder-run" :id="`ladderrun_${i}`" data-bs-toggle="collapse"
-                        :data-bs-target="`#ladder_run_${i}_detail`"> New Attempt: {{ i + 1 }} </div>
+                        :data-bs-target="`#ladder_run_${i}_detail`"> New Attempt: {{ i + 1 }} Cost: {{x.cost}} </div>
                     <div class="collapse hide" :id="`ladder_run_${i}_detail`" data-parent="#log">
                         <div class="card-body">
                             <div v-for="y in x.step_logs" class="ladder-step"> <!-- For each log item in the step log -->
