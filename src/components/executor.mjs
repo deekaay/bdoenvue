@@ -25,7 +25,6 @@ export function execute_metastrategy(state) {
             let step_log = trystrategy(state.metastrategy[current_fs], ladder_inventory);
             let try_result = step_log.step_result;
 
-            console.log(step_log.cost);
 /*
             if (try_result == "Failure")
                 current_fs += res.actions["gain_fs"];
@@ -50,12 +49,12 @@ export function execute_metastrategy(state) {
 
 }
 function trystrategy(strategy, inventory) {
-    console.log("Try Strategy: " + strategy + " fs: " + inventory.fs);
+    //console.log("Try Strategy: " + strategy + " fs: " + inventory.fs);
     let s = strategies[strategy];
     let prob = s.chance(inventory.fs);
     let r = Math.random();
-    console.log("r: " + r);
-    console.log(prob);
+    //console.log("r: " + r);
+    //console.log(prob);
 
     let step_action_log = [ ];
     let step_cost = 0;
@@ -74,15 +73,15 @@ function trystrategy(strategy, inventory) {
         if (!inventory[v])
             inventory[v] = 0;
 
-        console.log('I need: ' + needed[v] + ' of ' + v);
-        console.log('I have: ' + inventory[v] + ' of ' + v);
+        //console.log('I need: ' + needed[v] + ' of ' + v);
+        //console.log('I have: ' + inventory[v] + ' of ' + v);
         for (let j = 1; j <= (needed[v] - inventory[v]); j++) {
-            console.log(v);
-            console.log(items[v]);
-            console.log(items);
+            //console.log(v);
+            //console.log(items[v]);
+            //console.log(items);
             step_cost += items[v].acquire.silver;
-            step_action_log.push({ action: items[v].acquire.action, cost: items[v].acquire.silver }); // Purchase stuff.
-            console.log('Acquired: ' + items[v]);
+            step_action_log.push({ action: items[v].acquire.action, cost: items[v].acquire.silver, item: v }); // Purchase stuff.
+            //console.log('Acquired: ' + items[v]);
             inventory[v]++;
         }
     }
@@ -114,8 +113,8 @@ function trystrategy(strategy, inventory) {
         step_result = 'Failure';
         step_action_log.push(s.failure);
         inventory.fs += s.failure.gain_fs;
-        console.log('gain fs:' + s.failure.gain_fs);
-        console.log('New fs:' + inventory.fs);
+        //console.log('gain fs:' + s.failure.gain_fs);
+        //console.log('New fs:' + inventory.fs);
     }
     else {
         step_result = "Other";
@@ -129,6 +128,6 @@ function trystrategy(strategy, inventory) {
         inventory[vv] -= strategies[strategy].cost[vv];
         }
 
-    console.log("zz:" + JSON.stringify({ step_log : step_action_log, step_cost: step_cost, step_result : step_result }));
+    //console.log("zz:" + JSON.stringify({ step_log : step_action_log, step_cost: step_cost, step_result : step_result }));
     return { step_log : step_action_log, step_cost: step_cost, step_result: step_result, incoming_fs : incoming_fs, result_fs : inventory.fs };
 }
