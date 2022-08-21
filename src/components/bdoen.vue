@@ -11,14 +11,15 @@ export default
             return {
                 lang: "en",
                 strategies: strategies,
+                strategies_by_level: [],
                 state:
                 {
                     target: 20,
-                    metastrategy: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    metastrategy: [2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                     maxattempts: 500,
                     numiterations: 20,
-                    total_cost : 0,
-                    ladder_results : [ ]
+                    total_cost: 0,
+                    ladder_results: []
                 }
             }
         },
@@ -46,6 +47,20 @@ export default
                 return "";
             }
 
+        },
+        mounted() {
+            let i;
+            for (i = 0; i < this.state.target; i++) {
+                let z = [];
+                for (let j in this.strategies) {
+                    if (this.strategies[j].minuse <= i && this.strategies[j].maxuse >= i) {
+                        z.push(j);
+                    }
+                    console.log(z);
+                }
+                this.strategies_by_level.push(z);
+            }
+            console.log(this.strategies_by_level);
         }
     }
 
@@ -53,24 +68,30 @@ export default
 
 <template>
     <div class="container">
-        <div class="row">{{state.total_cost}}  {{state.numiterations}} {{ state.total_cost / state.numiterations}}</div> 
+        <div class="row">{{ state.total_cost }} {{ state.numiterations }} {{ state.total_cost / state.numiterations }}
+        </div>
         <div class="row">
             <div class="col">
-                <ul>
-                    <li v-for="item in state.metastrategy" v-text="strategies[item].name.en"> </li>
-                </ul>
+                <div class="row" v-for="(r, i) in state.metastrategy">
+                    <div class="fs-label"> FS: {{i}} </div>
+                    <select v-model="state.metastrategy[i]">
+                        <option v-for="k in strategies_by_level[i]" :value="k" :selected="k == state.metastrategy[i]"> {{ strategies[k].name.en }} </option>
+                    </select>
+                </div>
                 <button v-on:click="go($event)"> Go </button>
             </div>
             <div class="col" id="log">
-                <div v-for="(x, i) in state.ladder_results" class="card"> <!-- For each ladder run.  -->
+                <div v-for="(x, i) in state.ladder_results" class="card">
+                    <!-- For each ladder run.  -->
                     <div class="card-header ladder-run" :id="`ladderrun_${i}`" data-bs-toggle="collapse"
-                        :data-bs-target="`#ladder_run_${i}_detail`"> New Attempt: {{ i + 1 }} Cost: {{x.cost}} </div>
+                        :data-bs-target="`#ladder_run_${i}_detail`"> New Attempt: {{ i + 1 }} Cost: {{ x.cost }} </div>
                     <div class="collapse hide" :id="`ladder_run_${i}_detail`" data-parent="#log">
                         <div class="card-body">
-                            <div v-for="y in x.step_logs" class="ladder-step"> <!-- For each log item in the step log -->
-                                <div>Starting FS {{ y.incoming_fs }} </div> 
-                                <div v-for="z in y.step_log" class="ladder-step-det"> {{z}} </div>
-                                <div> {{ y.step_result }}  </div>
+                            <div v-for="y in x.step_logs" class="ladder-step">
+                                <!-- For each log item in the step log -->
+                                <div>Starting FS {{ y.incoming_fs }} </div>
+                                <div v-for="z in y.step_log" class="ladder-step-det"> {{ z }} </div>
+                                <div> {{ y.step_result }} </div>
                             </div>
                         </div>
                     </div>
@@ -84,4 +105,7 @@ export default
 .ladder-run {}
 
 .ladder-step {}
+
+i.fs-label { }
+
 </style>

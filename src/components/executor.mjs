@@ -10,6 +10,7 @@ export function execute_metastrategy(state) {
     while (state.ladder_results.length < state.numiterations) // This loop represents a distinct ladder attempt.
     {
         console.log("Ladder attempt: " + (state.ladder_results.length + 1));
+        console.log("Target: " + state.target);
         let ladder_log = [];
         let ladder_inventory = { fs: 0 };
         let ladder_cost = 0;
@@ -21,7 +22,7 @@ export function execute_metastrategy(state) {
 
         while (current_fs < state.target && cur_attempt <= state.maxattempts) // This means we're within a ladder.
         {
-            //console.log("Current fs: " + current_fs + " trying strategy" + strategies[state.metastrategy[current_fs]].name.en)
+            console.log("Current fs: " + current_fs + " trying strategy" + strategies[state.metastrategy[current_fs]].name.en)
             let step_log = trystrategy(state.metastrategy[current_fs], ladder_inventory);
             let try_result = step_log.step_result;
 
@@ -49,7 +50,7 @@ export function execute_metastrategy(state) {
 
 }
 function trystrategy(strategy, inventory) {
-    //console.log("Try Strategy: " + strategy + " fs: " + inventory.fs);
+    console.log("Try Strategy: " + strategy + " fs: " + inventory.fs);
     let s = strategies[strategy];
     let prob = s.chance(inventory.fs);
     let r = Math.random();
@@ -90,6 +91,7 @@ function trystrategy(strategy, inventory) {
 
     if (r <= prob.success) {
         // Success.
+        console.log('Success');
         step_result = 'Success';
         step_action_log.push(s.success);
         inventory.fs = 0;
@@ -110,6 +112,7 @@ function trystrategy(strategy, inventory) {
     }
     else if (r > prob.success && r <= (prob.success + prob.failure)) {
         // Fail, no blowup.
+        console.log('Failure');
         step_result = 'Failure';
         step_action_log.push(s.failure);
         inventory.fs += s.failure.gain_fs;
@@ -128,6 +131,6 @@ function trystrategy(strategy, inventory) {
         inventory[vv] -= strategies[strategy].cost[vv];
         }
 
-    //console.log("zz:" + JSON.stringify({ step_log : step_action_log, step_cost: step_cost, step_result : step_result }));
+    console.log("zz:" + JSON.stringify({ step_log : step_action_log, step_cost: step_cost, step_result : step_result }));
     return { step_log : step_action_log, step_cost: step_cost, step_result: step_result, incoming_fs : incoming_fs, result_fs : inventory.fs };
 }
